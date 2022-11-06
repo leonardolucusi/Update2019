@@ -11,10 +11,12 @@ namespace SalesWebMvc.Controllers
     public class SellersController : Controller
     {
         private readonly SellerService _sellerService;
-        
-        public SellersController(SellerService sellerService)
+        private readonly DepartmentService _departmentService;
+
+        public SellersController(SellerService sellerService, DepartmentService departmentService)
         {
             _sellerService = sellerService;
+            _departmentService = departmentService;
         }
 
         public IActionResult Index()
@@ -25,7 +27,9 @@ namespace SalesWebMvc.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var department = _departmentService.FindAll();
+            var viewModel = new SellerFormViewModel { Departments = department };
+            return View(viewModel);
         }
 
         [HttpPost]
